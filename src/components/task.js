@@ -68,8 +68,8 @@ export default class Task {
   }
 
   getTemplate() {
-    return createTaskTemplate();
-  };
+    return createTaskTemplate(this._task);
+  }
 
   getElement() {
     if (!this._element) {
