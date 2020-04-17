@@ -5,11 +5,11 @@ import TaskEditComponent from "./components/task-edit.js";
 import TaskComponent from "./components/task.js";
 import TasksComponent from "./components/tasks.js";
 import SiteMenuComponent from "./components/site-menu.js";
-import SortComponent from "./components/sorting.js";
-import {generateFilters} from "./mock/filter.js";
+import SortComponent from "./components/sort.js";
 import {generateTasks} from "./mock/task.js";
+import {generateFilters} from "./mock/filter.js";
 import {render, RenderPosition} from "./utils.js";
-import TaskEdit from "./components/task-edit.js";
+
 
 const TASK_COUNT = 22;
 const SHOWING_TASKS_COUNT_ON_START = 8;
@@ -17,12 +17,12 @@ const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 
 const renderTask = (taskListElement, task) => {
   const onEditButtonClick = () => {
-    taskListElement.replaceChild(taskEditComponent.getElement(), TaskComponent.getElement());
+    taskListElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
   };
 
   const onEditFormSubmit = (evt) => {
-    evt.preventDefaul();
-    taskListElement.replaceChild(taskComponent.getElement(), TaskEditComponent.getElement());
+    evt.preventDefault();
+    taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
   };
 
   const taskComponent = new TaskComponent(task);
@@ -31,7 +31,7 @@ const renderTask = (taskListElement, task) => {
 
   const taskEditComponent = new TaskEditComponent(task);
   const editForm = taskEditComponent.getElement().querySelector(`form`);
-  editForm.addEventListener(`click`, onEditFormSubmit);
+  editForm.addEventListener(`submit`, onEditFormSubmit);
 
   render(taskListElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
 };
@@ -49,7 +49,7 @@ const renderBoard = (boardComponent, tasks) => {
     });
 
   const loadMoreButtonComponent = new LoadMoreButtonComponent();
-  render(boardComponent.getElement(), loadMoreButtonComponent().getElement(), RenderPosition.BEFOREEND);
+  render(boardComponent.getElement(), loadMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
 
   loadMoreButtonComponent.getElement().addEventListener(`click`, () => {
     const prevTasksCount = showingTasksCount;
@@ -68,9 +68,12 @@ const renderBoard = (boardComponent, tasks) => {
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
-const filters = generateFilters();
 const tasks = generateTasks(TASK_COUNT);
+const filters = generateFilters();
 
 render(siteHeaderElement, new SiteMenuComponent().getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
 
+const boardComponent = new BoardComponent();
+render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
+renderBoard(boardComponent, tasks);
