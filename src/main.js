@@ -9,7 +9,7 @@ import SortComponent from "./components/sort.js";
 import NoTasksComponent from "./components/no-tasks.js";
 import {generateTasks} from "./mock/task.js";
 import {generateFilters} from "./mock/filter.js";
-import {replace, render, RenderPosition} from "./utils/render.js";
+import {remove, replace, render, RenderPosition} from "./utils/render.js";
 
 
 const TASK_COUNT = 22;
@@ -81,7 +81,7 @@ const renderBoard = (boardComponent, tasks) => {
       .forEach((task) => renderTask(taskListElement, task));
 
     if (showingTasksCount >= tasks.length) {
-      loadMoreButtonComponent.getElement().remove();
+      remove(loadMoreButtonComponent.getElement());
       loadMoreButtonComponent.removeElement();
     }
   });
