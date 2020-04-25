@@ -9,6 +9,7 @@ export const createElement = (template) => {
 
   return newElement.firstChild;
 };
+
 export const render = (container, element, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
@@ -18,4 +19,8 @@ export const render = (container, element, place) => {
       container.append(element);
       break;
   }
+};
+
+export const replace = (parent, newElement, oldElement) => {
+  parent.replaceChild(newElement, oldElement);
 };
